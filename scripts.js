@@ -72,7 +72,7 @@ function updateInputPermissions() {
 function moveToNextInput(e) {
   var key = e.key;
 
-  if( key !== 8 && key !== 46 ) {
+  if ( key !== 'Backspace' && key !== 'Delete' ) {
     var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
     inputs[indexOfNext].focus();
   }
