@@ -6,9 +6,12 @@ var gamesPlayed = [];
 var words = [];
 
 // API connection
-fetch('http://localhost:3001/api/v1/words').
-  then(response => response.json()).
-  then(data => words = data);
+fetch('http://localhost:3001/api/v1/words')
+  .then(response => response.json())
+  .then(data => {
+    words = data;
+    setGame();
+  }).catch(err => console.log('Error with words API', err));
 
 // Query Selectors
 var inputs = document.querySelectorAll('input');
@@ -27,7 +30,6 @@ var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
 var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
-window.addEventListener('load', setGame);
 guessButton.addEventListener('click', submitGuess);
 viewRulesButton.addEventListener('click', viewRules);
 viewGameButton.addEventListener('click', viewGame);
