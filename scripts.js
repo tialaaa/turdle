@@ -87,15 +87,14 @@ function clickLetter(e) {
 }
 
 function submitGuess() {
-  // REFACTOR: nested If statments
-  if (checkIsWord()) {
-    errorMessage.innerText = '';
+  errorMessage.innerText = '';
+
+  if (checkIsWord() && !checkForWin()) {
     compareGuess();
-    if (checkForWin()) {
-      setTimeout(declareWinner, 1000);
-    } else {
-      changeRow();
-    }
+    changeRow();
+  } else if (checkIsWord() && checkForWin()) {
+    compareGuess();
+    setTimeout(declareWinner, 1000);
   } else {
     errorMessage.innerText = 'Not a valid word. Try again!';
   }
