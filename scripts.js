@@ -7,7 +7,7 @@ var gamesPlayed = [];
 // Query Selectors
 var inputs = document.querySelectorAll('input');
 var guessButton = document.querySelector('#guess-button');
-var keyLetters = document.querySelectorAll('span');
+var keyLetters = document.querySelectorAll('.keys');
 var errorMessage = document.querySelector('#error-message');
 var viewRulesButton = document.querySelector('#rules-button');
 var viewGameButton = document.querySelector('#play-button');
@@ -206,40 +206,47 @@ function clearKey() {
 
 // Change Page View Functions
 
-// REFACTOR: make dynamic function for classlist changes
+function addClass(selector, className) {
+  selector.classList.add(className);
+}
+
+function removeClass(selector, className) {
+  selector.classList.remove(className);
+}
+
 function viewRules() {
-  letterKey.classList.add('hidden');
-  gameBoard.classList.add('collapsed');
-  rules.classList.remove('collapsed');
-  stats.classList.add('collapsed');
-  viewGameButton.classList.remove('active');
-  viewRulesButton.classList.add('active');
-  viewStatsButton.classList.remove('active');
+  addClass(letterKey, 'hidden');
+  addClass(gameBoard, 'collapsed');
+  removeClass(rules, 'collapsed');
+  addClass(stats, 'collapsed');
+  removeClass(viewGameButton, 'active');
+  addClass(viewRulesButton, 'active');
+  removeClass(viewStatsButton, 'active');
 }
 
 function viewGame() {
-  letterKey.classList.remove('hidden');
-  gameBoard.classList.remove('collapsed');
-  rules.classList.add('collapsed');
-  stats.classList.add('collapsed');
-  gameOverBox.classList.add('collapsed')
-  viewGameButton.classList.add('active');
-  viewRulesButton.classList.remove('active');
-  viewStatsButton.classList.remove('active');
+  removeClass(letterKey, 'hidden');
+  removeClass(gameBoard, 'collapsed');
+  addClass(rules, 'collapsed');
+  addClass(stats, 'collapsed');
+  addClass(gameOverBox, 'collapsed');
+  addClass(viewGameButton, 'active');
+  removeClass(viewRulesButton, 'active');
+  removeClass(viewStatsButton, 'active');
 }
 
 function viewStats() {
-  letterKey.classList.add('hidden');
-  gameBoard.classList.add('collapsed');
-  rules.classList.add('collapsed');
-  stats.classList.remove('collapsed');
-  viewGameButton.classList.remove('active');
-  viewRulesButton.classList.remove('active');
-  viewStatsButton.classList.add('active');
+  addClass(letterKey, 'hidden');
+  addClass(gameBoard, 'collapsed');
+  addClass(rules, 'collapsed');
+  removeClass(stats, 'collapsed');
+  removeClass(viewGameButton, 'active');
+  removeClass(viewRulesButton, 'active');
+  addClass(viewStatsButton, 'active');
 }
 
 function viewGameOverMessage() {
-  gameOverBox.classList.remove('collapsed')
-  letterKey.classList.add('hidden');
-  gameBoard.classList.add('collapsed');
+  removeClass(gameOverBox, 'collapsed');
+  addClass(letterKey, 'hidden');
+  addClass(gameBoard, 'collapsed');
 }
