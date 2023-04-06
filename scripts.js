@@ -139,7 +139,7 @@ function updateBoxColor(letterLocation, className) {
     }
   }
 
-  row[letterLocation].classList.add(className);
+  addClass(row[letterLocation], className);
 }
 
 function updateKeyColor(letter, className) {
@@ -151,7 +151,7 @@ function updateKeyColor(letter, className) {
     }
   }
 
-  keyLetter.classList.add(className);
+  addClass(keyLetter, className);
 }
 
 function checkForWin() {
@@ -177,9 +177,9 @@ function recordGameStats() {
 function changeGameOverText() {
   gameOverGuessCount.innerText = currentRow;
   if (currentRow < 2) {
-    gameOverGuessGrammar.classList.add('collapsed');
+    addClass(gameOverGuessGrammar, 'collapsed');
   } else {
-    gameOverGuessGrammar.classList.remove('collapsed');
+    removeClass(gameOverGuessGrammar, 'collapsed');
   }
 }
 
@@ -194,24 +194,28 @@ function startNewGame() {
 function clearGameBoard() {
   for (var i = 0; i < inputs.length; i++) {
     inputs[i].value = '';
-    inputs[i].classList.remove('correct-location', 'wrong-location', 'wrong');
+    removeClass(inputs[i], 'correct-location');
+    removeClass(inputs[i], 'wrong-location');
+    removeClass(inputs[i], 'wrong');
   }
 }
 
 function clearKey() {
   for (var i = 0; i < keyLetters.length; i++) {
-    keyLetters[i].classList.remove('correct-location-key', 'wrong-location-key', 'wrong-key');
+    removeClass(keyLetters[i], 'correct-location-key');
+    removeClass(keyLetters[i], 'wrong-location-key');
+    removeClass(keyLetters[i], 'wrong-key');
   }
 }
 
 // Change Page View Functions
 
-function addClass(selector, className) {
-  selector.classList.add(className);
+function addClass(element, className) {
+  element.classList.add(className);
 }
 
-function removeClass(selector, className) {
-  selector.classList.remove(className);
+function removeClass(element, className) {
+  element.classList.remove(className);
 }
 
 function viewRules() {
