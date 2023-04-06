@@ -7,7 +7,7 @@ var gamesPlayed = [];
 // Query Selectors
 var inputs = document.querySelectorAll('input');
 var guessButton = document.querySelector('#guess-button');
-var keyLetters = document.querySelectorAll('span');
+var keyLetters = document.querySelectorAll('.keys');
 var errorMessage = document.querySelector('#error-message');
 var viewRulesButton = document.querySelector('#rules-button');
 var viewGameButton = document.querySelector('#play-button');
@@ -60,10 +60,9 @@ function updateInputPermissions() {
   inputs[0].focus();
 }
 
-// BUG: On page load, focus moves to cell-1-1 instead of starting at cell-1-0
+// BUG: On page refresh using keyboard (a keyup), focus moves to cell-1-1 instead of starting at cell-1-0
 function moveToNextInput(e) {
-  // REFACTOR: keyCode and charCode are depreciated -> update to an alternative
-  var key = e.keyCode || e.charCode;
+  var key = e.key;
 
   if( key !== 8 && key !== 46 ) {
     var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
@@ -87,15 +86,14 @@ function clickLetter(e) {
 }
 
 function submitGuess() {
-  // REFACTOR: nested If statments
-  if (checkIsWord()) {
-    errorMessage.innerText = '';
+  errorMessage.innerText = '';
+
+  if (checkIsWord() && !checkForWin()) {
     compareGuess();
-    if (checkForWin()) {
-      setTimeout(declareWinner, 1000);
-    } else {
-      changeRow();
-    }
+    changeRow();
+  } else if (checkIsWord() && checkForWin()) {
+    compareGuess();
+    setTimeout(declareWinner, 1000);
   } else {
     errorMessage.innerText = 'Not a valid word. Try again!';
   }
@@ -139,7 +137,7 @@ function updateBoxColor(letterLocation, className) {
     }
   }
 
-  row[letterLocation].classList.add(className);
+  addClass(row[letterLocation], className);
 }
 
 function updateKeyColor(letter, className) {
@@ -151,7 +149,7 @@ function updateKeyColor(letter, className) {
     }
   }
 
-  keyLetter.classList.add(className);
+  addClass(keyLetter, className);
 }
 
 function checkForWin() {
@@ -177,9 +175,9 @@ function recordGameStats() {
 function changeGameOverText() {
   gameOverGuessCount.innerText = currentRow;
   if (currentRow < 2) {
-    gameOverGuessGrammar.classList.add('collapsed');
+    addClass(gameOverGuessGrammar, 'collapsed');
   } else {
-    gameOverGuessGrammar.classList.remove('collapsed');
+    removeClass(gameOverGuessGrammar, 'collapsed');
   }
 }
 
@@ -194,52 +192,63 @@ function startNewGame() {
 function clearGameBoard() {
   for (var i = 0; i < inputs.length; i++) {
     inputs[i].value = '';
-    inputs[i].classList.remove('correct-location', 'wrong-location', 'wrong');
+    removeClass(inputs[i], 'correct-location');
+    removeClass(inputs[i], 'wrong-location');
+    removeClass(inputs[i], 'wrong');
   }
 }
 
 function clearKey() {
   for (var i = 0; i < keyLetters.length; i++) {
-    keyLetters[i].classList.remove('correct-location-key', 'wrong-location-key', 'wrong-key');
+    removeClass(keyLetters[i], 'correct-location-key');
+    removeClass(keyLetters[i], 'wrong-location-key');
+    removeClass(keyLetters[i], 'wrong-key');
   }
 }
 
 // Change Page View Functions
 
-// REFACTOR: make dynamic function for classlist changes
+function addClass(element, className) {
+  element.classList.add(className);
+}
+
+function removeClass(element, className) {
+  element.classList.remove(className);
+}
+
 function viewRules() {
-  letterKey.classList.add('hidden');
-  gameBoard.classList.add('collapsed');
-  rules.classList.remove('collapsed');
-  stats.classList.add('collapsed');
-  viewGameButton.classList.remove('active');
-  viewRulesButton.classList.add('active');
-  viewStatsButton.classList.remove('active');
+  addClass(letterKey, 'hidden');
+  addClass(gameBoard, 'collapsed');
+  removeClass(rules, 'collapsed');
+  addClass(stats, 'collapsed');
+  removeClass(viewGameButton, 'active');
+  addClass(viewRulesButton, 'active');
+  removeClass(viewStatsButton, 'active');
 }
 
 function viewGame() {
-  letterKey.classList.remove('hidden');
-  gameBoard.classList.remove('collapsed');
-  rules.classList.add('collapsed');
-  stats.classList.add('collapsed');
-  gameOverBox.classList.add('collapsed')
-  viewGameButton.classList.add('active');
-  viewRulesButton.classList.remove('active');
-  viewStatsButton.classList.remove('active');
+  removeClass(letterKey, 'hidden');
+  removeClass(gameBoard, 'collapsed');
+  addClass(rules, 'collapsed');
+  addClass(stats, 'collapsed');
+  addClass(gameOverBox, 'collapsed');
+  addClass(viewGameButton, 'active');
+  removeClass(viewRulesButton, 'active');
+  removeClass(viewStatsButton, 'active');
 }
 
 function viewStats() {
-  letterKey.classList.add('hidden');
-  gameBoard.classList.add('collapsed');
-  rules.classList.add('collapsed');
-  stats.classList.remove('collapsed');
-  viewGameButton.classList.remove('active');
-  viewRulesButton.classList.remove('active');
-  viewStatsButton.classList.add('active');
+  addClass(letterKey, 'hidden');
+  addClass(gameBoard, 'collapsed');
+  addClass(rules, 'collapsed');
+  removeClass(stats, 'collapsed');
+  removeClass(viewGameButton, 'active');
+  removeClass(viewRulesButton, 'active');
+  addClass(viewStatsButton, 'active');
 }
 
 function viewGameOverMessage() {
-  gameOverBox.classList.remove('collapsed')
-  letterKey.classList.add('hidden');
-  gameBoard.classList.add('collapsed');
+  removeClass(gameOverBox, 'collapsed');
+  addClass(letterKey, 'hidden');
+  addClass(gameBoard, 'collapsed');
 }
