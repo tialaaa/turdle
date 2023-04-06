@@ -3,6 +3,12 @@ var winningWord = '';
 var currentRow = 1;
 var guess = '';
 var gamesPlayed = [];
+var words = [];
+
+// API connection
+fetch('http://localhost:3001/api/v1/words').
+  then(response => response.json()).
+  then(data => words = data);
 
 // Query Selectors
 var inputs = document.querySelectorAll('input');
