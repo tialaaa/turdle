@@ -60,10 +60,9 @@ function updateInputPermissions() {
   inputs[0].focus();
 }
 
-// BUG: On page load, focus moves to cell-1-1 instead of starting at cell-1-0
+// BUG: On page refresh using keyboard (a keyup), focus moves to cell-1-1 instead of starting at cell-1-0
 function moveToNextInput(e) {
-  // REFACTOR: keyCode and charCode are depreciated -> update to an alternative
-  var key = e.keyCode || e.charCode;
+  var key = e.key;
 
   if( key !== 8 && key !== 46 ) {
     var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
