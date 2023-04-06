@@ -22,7 +22,12 @@ var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
 window.addEventListener('load', setGame);
+guessButton.addEventListener('click', submitGuess);
+viewRulesButton.addEventListener('click', viewRules);
+viewGameButton.addEventListener('click', viewGame);
+viewStatsButton.addEventListener('click', viewStats);
 
+// REFACTOR: For loops into functions ?
 for (var i = 0; i < inputs.length; i++) {
   inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
 }
@@ -30,14 +35,6 @@ for (var i = 0; i < inputs.length; i++) {
 for (var i = 0; i < keyLetters.length; i++) {
   keyLetters[i].addEventListener('click', function() { clickLetter(event) });
 }
-
-guessButton.addEventListener('click', submitGuess);
-
-viewRulesButton.addEventListener('click', viewRules);
-
-viewGameButton.addEventListener('click', viewGame);
-
-viewStatsButton.addEventListener('click', viewStats);
 
 // Functions
 function setGame() {
@@ -63,7 +60,9 @@ function updateInputPermissions() {
   inputs[0].focus();
 }
 
+// BUG: On page load, focus moves to cell-1-1 instead of starting at cell-1-0
 function moveToNextInput(e) {
+  // REFACTOR: keyCode and charCode are depreciated -> update to an alternative
   var key = e.keyCode || e.charCode;
 
   if( key !== 8 && key !== 46 ) {
@@ -88,6 +87,7 @@ function clickLetter(e) {
 }
 
 function submitGuess() {
+  // REFACTOR: nested If statments
   if (checkIsWord()) {
     errorMessage.innerText = '';
     compareGuess();
@@ -117,7 +117,6 @@ function compareGuess() {
   var guessLetters = guess.split('');
 
   for (var i = 0; i < guessLetters.length; i++) {
-
     if (winningWord.includes(guessLetters[i]) && winningWord.split('')[i] !== guessLetters[i]) {
       updateBoxColor(i, 'wrong-location');
       updateKeyColor(guessLetters[i], 'wrong-location-key');
@@ -129,7 +128,6 @@ function compareGuess() {
       updateKeyColor(guessLetters[i], 'wrong-key');
     }
   }
-
 }
 
 function updateBoxColor(letterLocation, className) {
@@ -208,6 +206,7 @@ function clearKey() {
 
 // Change Page View Functions
 
+// REFACTOR: make dynamic function for classlist changes
 function viewRules() {
   letterKey.classList.add('hidden');
   gameBoard.classList.add('collapsed');
